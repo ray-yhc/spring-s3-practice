@@ -37,14 +37,13 @@ public class MultipartUtil {
     }
 
     /**
-     * Multipart 의 ContentType 값에서 / 이후 확장자만 잘라냅니다.
-     * @param contentType ex) image/png
+     * Multipart 의 OriginalFilename 값에서 . 이후 확장자만 잘라냅니다.
+     * @param OriginalFilename ex) myFile.png
      * @return ex) png
      */
-    public static String getFormatByName(String contentType) {
-        if (StringUtils.hasText(contentType)) {
-            log.info("contentType = {}", contentType);
-            return contentType.substring(contentType.lastIndexOf('.') + 1);
+    public static String getFormatByName(String OriginalFilename) {
+        if (StringUtils.hasText(OriginalFilename)) {
+            return OriginalFilename.substring(OriginalFilename.lastIndexOf('.') + 1);
         }
         return null;
     }
