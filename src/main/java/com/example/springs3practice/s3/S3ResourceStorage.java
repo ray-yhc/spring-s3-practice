@@ -42,4 +42,17 @@ public class S3ResourceStorage {
         }
     }
 
+    public ResponseEntity<byte[]> getObject(String storedFileName) throws IOException {
+        S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, storedFileName));
+        S3ObjectInputStream objectInputStream = o.getObjectContent();
+        byte[] bytes = IOUtils.toByteArray(objectInputStream);
+
+        String fileName = URLEncoder.encode(storedFileName, "UTF-8").replaceAll("\\+", "%20");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+        httpHeaders.setContentLength(bytes.length);
+        httpHeaders.setContentDispositionFormData("attachment", fileName);
+
+        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+    }
 }

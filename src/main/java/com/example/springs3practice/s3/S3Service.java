@@ -22,4 +22,7 @@ public class S3Service {
         return fileDetail;
     }
 
+    public ResponseEntity<byte[]> getObject(String fileName) throws IOException {
+        return s3Storage.getObject(fileName);
+    }
 }
