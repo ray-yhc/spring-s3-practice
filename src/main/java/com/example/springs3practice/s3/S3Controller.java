@@ -2,6 +2,7 @@ package com.example.springs3practice.s3;
 
 
 import com.example.springs3practice.s3.model.FileDetail;
+import com.example.springs3practice.s3.model.GetPresignedUrlRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/app")
 @RequiredArgsConstructor
 @Slf4j
 public class S3Controller {
@@ -38,5 +39,14 @@ public class S3Controller {
     public ResponseEntity<byte[]> downloadFile(@RequestParam String fileName) throws IOException {
         log.info("fileName = {}", fileName);
         return s3Service.getObject(fileName);
+    }
+
+    /**
+     * 대용량 파일 업로드를 위한
+     * presigned url 발급
+     */
+    @GetMapping("/getPresignedUrl")
+    public ResponseEntity<GetPresignedUrlRes> getPresignedUrl(@RequestParam String fileName) {
+        return ResponseEntity.ok(s3Service.getPresignedUrl(fileName));
     }
 }

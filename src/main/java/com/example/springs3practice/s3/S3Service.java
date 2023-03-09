@@ -1,6 +1,8 @@
 package com.example.springs3practice.s3;
 
 import com.example.springs3practice.s3.model.FileDetail;
+import com.example.springs3practice.s3.model.GetPresignedUrlRes;
+import com.example.springs3practice.util.MultipartUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +26,14 @@ public class S3Service {
 
     public ResponseEntity<byte[]> getObject(String fileName) throws IOException {
         return s3Storage.getObject(fileName);
+    }
+
+    public GetPresignedUrlRes getPresignedUrl(String fileName) {
+        String fileId = MultipartUtil.createFileId();
+        String format = MultipartUtil.getFormatByName(fileName);
+        String filePath = MultipartUtil.createPath(fileId, format);
+
+        GetPresignedUrlRes g = s3Storage.getPreSignedUrl(fileId, filePath);
+        return g;
     }
 }
